@@ -95,4 +95,4 @@ def main(path):
     read_peak_spectra(dict_path['peak_spectra'])
     
     
-main('C:\\Users\\sverme-adm\\Documents\\PythonScripts\\Sarah_data-master\\data\Blüte\\2022-02-14\\1')
+main('C:\\Users\\sverme-adm\\Desktop\\data\Bluete\\2022_02_14\\1')
