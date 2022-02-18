@@ -5,23 +5,25 @@ import json as js
 from matplotlib import pyplot as plt
 
 class Filehandling:
+
+    # creates directory for files
     def mkdir(path, folder):
         path = os.path.join(path, folder)
         Path(path).mkdir(parents=True, exist_ok=True)
         return path
 
-
+    # lists files in directory
     def list_files(path):
         return os.listdir(path)
 
-
+    # saves dataframe in directory
     def save_df(df, path, name):
         path = path + '\\results'
         Path(path).mkdir(parents=True, exist_ok=True)
         path = path + '\\' + name + '.csv'
         print("{0} saved as {1}".format(name,path))
         df.to_csv(path, sep=';', decimal=',', index = True)
-
+    # sorts files and only shows files with special filenames
     def sort_files(path):
         files = Filehandling.list_files(path)
         file_names = ['peak_identification', 'peak_spectra', 'chromatogramm']
@@ -35,13 +37,12 @@ class Filehandling:
         return dict_files
 
 
-
+    # reads identification files
 def read_identification(path):
     df = pd.read_csv(path, delimiter='\t', skiprows=8, encoding='latin1')
     df.set_index('Ret.Time', inplace=True)
     path = path[:path.rfind('\\')]
-    ## saving df ##
-    # Filehandling.save_df(df, path, 'identification_extracted')
+    
     return df
     
 # reading chromatogram   
@@ -57,21 +58,25 @@ def read_chromatogramm(path):
 
 
 def plot_chromatogram(df_chrom, df_peaks):
-    fig, ax = plt.subplots(figsize=(12, 8), dpi=100)
+    fig, ax = plt.subplots(figsize=(17, 10), dpi=100)
     ax.plot(df_chrom)
     y_values = df_chrom['Absolute Intensity']
-    
-
+    plt.xlabel('Retentiontime /min')
+    plt.ylabel('Absolute Intensity')
     for i in df_peaks.index:
         flag = True
         n = 0
         while flag:
             try:
                 ax.plot(i+n, y_values[i+n], 'x')
-                ax.annotate(df_peaks['Name'][i], (i, y_values[i+n]+10000), rotation=90, size=8)
+                ax.annotate(df_peaks['Name'][i], (i, y_values[i+n]), 
+                xytext=(-3, 35), textcoords='offset points',
+                rotation=90, size=6,
+                arrowprops=dict(arrowstyle="]->"),
+                bbox=dict(boxstyle="round", alpha=0.15)) # writes peak names in plot
                 flag = False
             except:
-                n += 0.001
+                n += 0.001 # if Rt not in chromatogramm changes Rt to Rt + 0,001
     plt.show()
 
 
@@ -133,4 +138,4 @@ def main(path):
     
 
 
-main('C:\\Users\\sverme-adm\\Desktop\\data\Bluete\\2022_02_14\\1')
+main('C:\\Users\\sverme-adm\\Desktop\\data\Bluete\\2022_02_14\\2')
