@@ -37,6 +37,9 @@ class Filehandling:
         return dict_files
 
 
+
+
+
     # reads identification files
 def read_identification(path):
     df = pd.read_csv(path, delimiter='\t', skiprows=8, encoding='latin1')
@@ -57,7 +60,7 @@ def read_chromatogramm(path):
     return df
 
 
-def plot_chromatogram(df_chrom, df_peaks):
+def plot_chromatogram(df_chrom, df_peaks, path):
     fig, ax = plt.subplots(figsize=(17, 10), dpi=100)
     ax.plot(df_chrom)
     y_values = df_chrom['Absolute Intensity']
@@ -77,7 +80,11 @@ def plot_chromatogram(df_chrom, df_peaks):
                 flag = False
             except:
                 n += 0.001 # if Rt not in chromatogramm changes Rt to Rt + 0,001
-    plt.show()
+    path_chromatogramm = Filehandling.mkdir(path, f'results\\Chromatogramm')
+    path_to_chromatogramm =os.path.join(path_chromatogramm, 'chromatogramm')
+    plt.savefig(path_to_chromatogramm)
+    
+    
 
 
 def read_peak_spectra(path):
@@ -134,7 +141,7 @@ def main(path):
     df_chromatogramm = read_chromatogramm(dict_path['chromatogramm'])
 
     # plotting data
-    plot_chromatogram(df_chromatogramm, df_identification)
+    plot_chromatogram(df_chromatogramm, df_identification, path)
     
 
 
