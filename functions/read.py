@@ -36,7 +36,36 @@ class Filehandling:
                     pass
         return dict_files
 
+    
+    def list_files_entire_path(path):
+        return [os.path.join(path, i) for i in os.listdir(path)]
 
+
+    # creates a list with all subdirectories with depth 3, files can be included
+    def create_sub_list(path):
+        sub1 = Filehandling.list_files_entire_path(path) # Locations
+        sub2 = [] # date
+        sub3 = []# number
+        for i in sub1:
+            sub2 += Filehandling.list_files_entire_path(i)
+        for i in sub2:
+            try:
+                sub3 += Filehandling.list_files_entire_path(i)
+            except Exception as e:
+                print(f'problems while checking {i}')  
+        return Filehandling.clean_subs(sub3)
+
+
+    # deleting files and add their parent folder
+    def clean_subs(subs):
+        reduced_subs = []
+        for i in subs:
+            if i.find('.csv') < 0 and i.find('results') < 0:
+                reduced_subs.append(i)
+            else:
+                reduced_subs.append(i[:i.rfind('\\')])
+        reduced_subs = list(set(reduced_subs))
+        return reduced_subs
 
 
 
@@ -83,6 +112,7 @@ def plot_chromatogram(df_chrom, df_peaks, path):
     path_chromatogramm = Filehandling.mkdir(path, f'results\\Chromatogramm')
     path_to_chromatogramm =os.path.join(path_chromatogramm, 'chromatogramm')
     plt.savefig(path_to_chromatogramm)
+    plt.close()
     
     
 
@@ -131,18 +161,23 @@ def read_peak_spectra(path):
 
 
         
-def main(path):
-    # matching path
-    dict_path = Filehandling.sort_files(path)
+def main(path_root):
+    directorys = Filehandling.create_sub_list(path_root)
 
-    # reading data
-    df_identification = read_identification(dict_path['peak_identification'])
-    read_peak_spectra(dict_path['peak_spectra'])
-    df_chromatogramm = read_chromatogramm(dict_path['chromatogramm'])
+    for path in directorys:
+        print(f'reading {path}...')
+        # matching path
+        dict_path = Filehandling.sort_files(path)
 
-    # plotting data
-    plot_chromatogram(df_chromatogramm, df_identification, path)
+        # reading data
+        df_identification = read_identification(dict_path['peak_identification'])
+        read_peak_spectra(dict_path['peak_spectra'])
+        df_chromatogramm = read_chromatogramm(dict_path['chromatogramm'])
+
+        # plotting data
+        plot_chromatogram(df_chromatogramm, df_identification, path)
     
+  
 
 
-main('C:\\Users\\sverme-adm\\Desktop\\data\\Raum\\2022_02_16')
+main('C:\\Users\\sverme-adm\\Desktop\\data')
