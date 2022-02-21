@@ -101,7 +101,7 @@ def read_peak_spectra(path):
             except:
                 new_list = lines[s_index:]
 
-            name = new_list[2][new_list[2].find(';')+1:]
+            name = new_list[2][new_list[2].find('\t')+1:]
             name = name[:name.find(' ')].replace('.', '_')
             
             # removing header
@@ -138,4 +138,4 @@ def main(path):
     
 
 
-main('C:\\Users\\sverme-adm\\Desktop\\data\Bluete\\2022_02_14\\2')
+main('C:\\Users\\sverme-adm\\Desktop\\data\\Raum\\2022_02_16')
