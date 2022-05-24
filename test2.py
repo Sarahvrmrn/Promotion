@@ -1,8 +1,8 @@
 import pandas as pd
 import os
+import os.path
 from pathlib import Path
 import json as js
-import datetime
 from matplotlib import pyplot as plt
 
 class Filehandling:
@@ -15,7 +15,11 @@ class Filehandling:
 
     # lists files in directory
     def list_files(path):
-        return os.listdir(path)
+    
+        for dirpath, dirnames, filename in os.walk("C:\\Users\\sverme-adm\\Desktop\\data"):
+            for filename in [f for f in filename if f.endswith(".csv")]:
+                return os.path.join(dirpath, filename)
+            print(os.path.join(dirpath, filename))
 
     # saves dataframe in directory
     def save_df(df, path, name):
@@ -38,10 +42,8 @@ class Filehandling:
         return dict_files
 
     
-    def list_files_entire_path(path):
-        return [os.path.join(path, i) for i in os.listdir(path)]
 
-
+"""
     # creates a list with all subdirectories with depth 3, files can be included
     def create_sub_list(path):
         sub1 = Filehandling.list_files_entire_path(path) # Locations
@@ -68,7 +70,7 @@ class Filehandling:
         reduced_subs = list(set(reduced_subs))
         return reduced_subs
 
-
+"""
 
     # reads identification files
 def read_identification(path):
@@ -162,21 +164,17 @@ def read_peak_spectra(path):
 
 
         
-def main(path_root):
-    directorys = Filehandling.create_sub_list(path_root)
+def main(path):
 
-    for path in directorys:
-        print(f'reading {path}...')
-        # matching path
-        dict_path = Filehandling.sort_files(path)
+    dict_path = Filehandling.sort_files(path)
 
         # reading data
-        df_identification = read_identification(dict_path['peak_identification'])
-        read_peak_spectra(dict_path['peak_spectra'])
-        df_chromatogramm = read_chromatogramm(dict_path['chromatogramm'])
-      
+    df_identification = read_identification(dict_path['peak_identification'])
+    read_peak_spectra(dict_path['peak_spectra'])
+    df_chromatogramm = read_chromatogramm(dict_path['chromatogramm'])
+
         # plotting data
-        plot_chromatogram(df_chromatogramm, df_identification, path)
+    plot_chromatogram(df_chromatogramm, df_identification, path)
     
   
 
