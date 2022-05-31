@@ -6,6 +6,7 @@ import json as js
 from datetime import datetime
 from matplotlib import pyplot as plt
 from PCA_test import doPCA
+from PCA_test import doLDA
 
 
 class Filehandling:
@@ -105,17 +106,24 @@ def main(path_root):
         # print(thisDf.head())
         # print(dict_path['chromatogramm'])
     dfResult = dfResult.T
+    dfResult = dfResult.fillna(0)
     dfResult = dfResult.reset_index(drop=True)
     dfResult['date'] = dates
     dfResult['name'] = names
+    
     print(dfResult[dfResult['name'] == 'Bluete'])
     dt_string = datetime.now().strftime("%d-%m-%Y_%H-%M-%S") 
     dt_string = dt_string + '_results.csv'
-    pathSave = os.path.join(path_root,'results')
-    Path(pathSave).mkdir(parents=True, exist_ok=True)
-    pathSave = os.path.join(pathSave, dt_string)
-    dfResult.to_csv(pathSave, decimal='.', sep='\t', index=False)
-    doPCA(pathSave)
+    pathSavePCA = os.path.join(path_root,'resultsPCA')
+    Path(pathSavePCA).mkdir(parents=True, exist_ok=True)
+    pathSavePCA = os.path.join(pathSavePCA, dt_string)
+    dfResult.to_csv(pathSavePCA, decimal='.', sep='\t', index=False)
+    doPCA(pathSavePCA)
+    pathSaveLDA = os.path.join(path_root,'resultsLDA')
+    Path(pathSaveLDA).mkdir(parents=True, exist_ok=True)
+    pathSaveLDA = os.path.join(pathSaveLDA, dt_string)
+    dfResult.to_csv(pathSaveLDA, decimal='.', sep='\t', index=False)
+    doLDA(pathSaveLDA)
 
   
 
