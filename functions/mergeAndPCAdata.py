@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 from PCA_test import doPCA
 from PCA_test import doLDA
 
-
 class Filehandling:
 
     # creates directory for files
@@ -93,6 +92,7 @@ def main(path_root):
     dates  = []
     names = []
 
+
     for path in directorys:
         date, name = extract_properties(path)
         dates.append(date)
@@ -103,6 +103,7 @@ def main(path_root):
         thisDf.set_index('Ret.Time', inplace=True)
         thisDf.drop('Relative Intensity', axis=1, inplace=True)
         dfResult = pd.concat([dfResult, thisDf], axis=1)
+        
         # print(thisDf.head())
         # print(dict_path['chromatogramm'])
     dfResult = dfResult.T
@@ -119,11 +120,13 @@ def main(path_root):
     pathSavePCA = os.path.join(pathSavePCA, dt_string)
     dfResult.to_csv(pathSavePCA, decimal='.', sep='\t', index=False)
     doPCA(pathSavePCA)
+    
     pathSaveLDA = os.path.join(path_root,'resultsLDA')
     Path(pathSaveLDA).mkdir(parents=True, exist_ok=True)
     pathSaveLDA = os.path.join(pathSaveLDA, dt_string)
     dfResult.to_csv(pathSaveLDA, decimal='.', sep='\t', index=False)
     doLDA(pathSaveLDA)
+
 
   
 

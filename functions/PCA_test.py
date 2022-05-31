@@ -7,7 +7,43 @@ from matplotlib import pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from datetime import datetime
 
+
+def doPCA(path):
+    pathPlot = path[:path.rfind('.csv')] +'.html' 
+
+    df = pd.read_csv(path, delimiter = '\t', decimal='.')
+    x = df.drop(['date', 'name'], axis=1).values
+    x = StandardScaler().fit_transform(x)
+    y =  df['name']
+
+    pca = PCA(n_components=10)
+    principalComponents = pca.fit_transform(x)
+    dfPCA = pd.DataFrame(data= principalComponents, columns=['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6','PC7', 'PC8', 'PC9','PC10'])
+    dfPCA['label'] = y
+    dfPCA['name'] = df['name']
+    dfPCA['date'] = df['date']
+    dfPCA.to_csv(path)
+
+    
+    
+
+'''    fig = px.scatter_3d(dfPCA, x='PC1', y='PC2', z='PC3', color='label', custom_data=['name', 'date'])
+    fig.update_traces(
+    hovertemplate="<br>".join([
+        "PC1: %{x}",
+        "PC2: %{y}",
+        "PC3: %{z}",
+        "name: %{customdata[0]}",
+        "date: %{customdata[1]}",
+        
+    ]))'''
+
+
+
+'''    fig.write_html(pathPlot)
+    fig.show()'''
 
 def doLDA(path):
     pathPlot = path[:path.rfind('.csv')] +'.html' 
@@ -34,44 +70,9 @@ def doLDA(path):
         
     ]))
 
-
-    fig.write_html(pathPlot)
-    fig.show()
-
-
-
-def doPCA(path):
-    pathPlot = path[:path.rfind('.csv')] +'.html' 
-
-    df = pd.read_csv(path, delimiter = '\t', decimal='.')
-    x = df.drop(['date', 'name'], axis=1).values
-    x = StandardScaler().fit_transform(x)
-    y =  df['name']
-
-    pca = PCA(n_components=3)
-    principalComponents = pca.fit_transform(x)
-    dfPCA = pd.DataFrame(data= principalComponents, columns=['PC1', 'PC2', 'PC3'])
-    dfPCA['label'] = y
-    dfPCA['name'] = df['name']
-    dfPCA['date'] = df['date']
     
-
-    fig = px.scatter_3d(dfPCA, x='PC1', y='PC2', z='PC3', color='label', custom_data=['name', 'date'])
-    fig.update_traces(
-    hovertemplate="<br>".join([
-        "PC1: %{x}",
-        "PC2: %{y}",
-        "PC3: %{z}",
-        "name: %{customdata[0]}",
-        "date: %{customdata[1]}",
-        
-    ])
-)
-
-
     fig.write_html(pathPlot)
     fig.show()
-
 
 
 if __name__ == '__main__':
