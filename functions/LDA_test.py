@@ -15,7 +15,7 @@ def doLDA(path):
 
     df = pd.read_csv(path, delimiter = ',', decimal='.')
     x = df.drop(['date', 'name', 'label'], axis=1).values
-    x = StandardScaler().fit_transform(x)
+    
     y =  df['name']
 
     lda = LinearDiscriminantAnalysis(n_components=3)
@@ -40,7 +40,7 @@ def doLDA(path):
     fig.show()
 
 
-doLDA('C:\\Users\sverme-adm\\Desktop\\data\\resultsPCA\\31-05-2022_17-29-48_results.csv')
+doLDA('C:\\Users\sverme-adm\\Desktop\\data\\resultsPCA\\01-06-2022_10-43-31_results.csv')
 
 
 
