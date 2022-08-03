@@ -11,7 +11,7 @@ from datetime import datetime
 import test
 
 
-components_PCA = 50
+components_PCA = 3
 
 
 def doPCA(df, path, name):
@@ -25,13 +25,13 @@ def doPCA(df, path, name):
     pca = PCA(n_components=components_PCA)
     principalComponents = pca.fit_transform(x)
     dfPCA = pd.DataFrame(data=principalComponents, columns=[
-                         f'PC{i+1}' for i in range(50)])
+                         f'PC{i+1}' for i in range(components_PCA)])
     
     dfPCA['label'] = y
     dfPCA['name'] = df['name']
     dfPCA['date'] = df['date']
     dfPCA.to_csv(pathData)
-
+    print(pca.explained_variance_ratio_)
     if components_PCA == 3:
         fig = px.scatter_3d(dfPCA, x='PC1', y='PC2', z='PC3',
                             color='label', custom_data=['name', 'date'])
@@ -46,8 +46,8 @@ def doPCA(df, path, name):
 
         dfPCA.to_csv(pathData, sep='\t', decimal='.')
         fig.write_html(pathPlot)
-        #fig.show()
-        fig.close()
+        fig.show()
+        
     return dfPCA
 
 
@@ -65,7 +65,7 @@ def doLDA(df, path, name):
     dfLDA['label'] = y
     dfLDA['name']= df['name']
     dfLDA['date'] = df['date']
-
+    print(lda.explained_variance_ratio_)
     fig = px.scatter_3d(dfLDA, x='LD1', y='LD2', z='LD3', color='label', custom_data=['name', 'date'])
     fig.update_traces(
     hovertemplate="<br>".join([
