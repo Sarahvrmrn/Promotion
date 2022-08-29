@@ -5,9 +5,10 @@ from pathlib import Path
 from datetime import datetime
 from matplotlib import pyplot as plt
 from statistics import doPCA, doLDA
+from threading import Thread
 
-
-
+path_new = 'C:\\Users\\sverme-adm\\Desktop\\data_neu'
+path_old = 'C:\\Users\\sverme-adm\\Desktop\\data'
 
 class DataProcessing:
     def list_files_entire_path(path):
@@ -102,6 +103,7 @@ class DataProcessing:
 
         # processing PCA
         df_PC = doPCA(dfResult,  pathSave, dt_string)
+        
 
         # procesing LDA
         doLDA(df_PC,  pathSave, dt_string)
@@ -109,5 +111,4 @@ class DataProcessing:
 
 
 
-
-DataProcessing.readData('C:\\Users\\sverme-adm\\Desktop\\data')
+DataProcessing.readData(path_new)
