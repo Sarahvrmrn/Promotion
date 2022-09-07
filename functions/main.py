@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from statistics import doPCA, doLDA
 from threading import Thread
 
+
 path_new = 'C:\\Users\\sverme-adm\\Desktop\\data_neu'
 path_old = 'C:\\Users\\sverme-adm\\Desktop\\data'
 
@@ -99,8 +100,9 @@ class DataProcessing:
 
         dt_string = datetime.now().strftime("%d-%m-%Y_%H-%M-%S") 
         pathSaveResult = os.path.join(pathSave, dt_string +'_results.csv')
+        
         dfResult.to_csv(pathSaveResult, decimal='.', sep='\t', index=False)
-
+        
         # processing PCA
         df_PC = doPCA(dfResult,  pathSave, dt_string)
         

@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from pathlib import Path
 import json as js
+import seaborn as sns
 import plotly.express as px
 from matplotlib import pyplot as plt
 from sklearn.decomposition import PCA
@@ -9,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from datetime import datetime
 import test
+from bioinfokit.visuz import cluster
 
 
 components_PCA = 3
@@ -30,8 +32,23 @@ def doPCA(df, path, name):
     dfPCA['label'] = y
     dfPCA['name'] = df['name']
     dfPCA['date'] = df['date']
-    dfPCA.to_csv(pathData)
-    print(pca.explained_variance_ratio_)
+    loadings = pca.components_
+    num_pc = pca.n_features_
+    pc_list = ["PC"+str(i) for i in list(range(1, num_pc+1))]
+    loadings_df = pd.DataFrame.from_dict(dict(zip(pc_list, loadings)))
+    
+    print(loadings_df)
+    loadings_df.to_csv('loadings.csv')
+    
+    #fig_loadings = cluster.pcaplot(x=loadings[0], y=loadings[1],  labels=df.columns.values, 
+    #var1=round(pca.explained_variance_ratio_[0]*100, 2), var2=round(pca.explained_variance_ratio_[1]*100, 2)) 
+
+    #fig_loadings.show()
+
+    ax = sns.heatmap(loadings_df, annot=True, cmap='Spectral')
+    plt.show()
+    
+
     if components_PCA == 3:
         fig = px.scatter_3d(dfPCA, x='PC1', y='PC2', z='PC3',
                             color='label', custom_data=['name', 'date'])
