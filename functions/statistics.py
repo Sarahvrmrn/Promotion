@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import os
 from pathlib import Path
@@ -36,8 +37,13 @@ def doPCA(df, path, name):
     num_pc = pca.n_features_
     pc_list = ["PC"+str(i) for i in list(range(1, num_pc+1))]
     loadings_df = pd.DataFrame.from_dict(dict(zip(pc_list, loadings)))
+    RT = np.arange(start=0,stop=7032)
+    loadings_df['Retention Time'] = RT
+    loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
+    loadings_df.set_index('Retention Time', inplace=True)
     
-    print(loadings_df)
+    print(loadings_df.index.name)
+    #loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
     loadings_df.to_csv('loadings.csv')
     
     #fig_loadings = cluster.pcaplot(x=loadings[0], y=loadings[1],  labels=df.columns.values, 
@@ -45,8 +51,8 @@ def doPCA(df, path, name):
 
     #fig_loadings.show()
 
-    ax = sns.heatmap(loadings_df, annot=True, cmap='Spectral')
-    plt.show()
+    #ax = sns.heatmap(loadings_df, annot=True, cmap='Spectral')
+    #plt.show()
     
 
     if components_PCA == 3:
