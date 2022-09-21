@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import matplotlib.gridspec as gridspec
 
 
-df = pd.read_csv('loadings.csv', decimal='.', delimiter=',', index_col=0)
+df = pd.read_csv('scalings.csv', decimal='.', delimiter=',', index_col=0)
 df_abs= df.abs()
 df_sum = df_abs[df.columns[0]] + df_abs[df.columns[1]] + df_abs[df.columns[2]]
 df_abs['sum'] = df_sum

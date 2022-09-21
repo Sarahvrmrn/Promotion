@@ -6,6 +6,7 @@ from datetime import datetime
 from matplotlib import pyplot as plt
 from statistics import doPCA, doLDA
 from threading import Thread
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 
 path_new = 'C:\\Users\\sverme-adm\\Desktop\\data_neu'
@@ -108,7 +109,10 @@ class DataProcessing:
         
 
         # procesing LDA
-        doLDA(df_PC,  pathSave, dt_string)
+        dfLDA = doLDA(dfResult,  pathSave, dt_string)
+        #myplot(dfLDA[:,0:2], LinearDiscriminantAnalysis.scalings_) 
+        #plt.show()
+
 
 
 

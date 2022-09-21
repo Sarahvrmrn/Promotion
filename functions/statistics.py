@@ -33,6 +33,8 @@ def doPCA(df, path, name):
     dfPCA['label'] = y
     dfPCA['name'] = df['name']
     dfPCA['date'] = df['date']
+    print(dfPCA)
+
     loadings = pca.components_
     num_pc = pca.n_features_
     pc_list = ["PC"+str(i) for i in list(range(1, num_pc+1))]
@@ -41,9 +43,6 @@ def doPCA(df, path, name):
     loadings_df['Retention Time'] = RT
     loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
     loadings_df.set_index('Retention Time', inplace=True)
-    
-    print(loadings_df.index.name)
-    #loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
     loadings_df.to_csv('loadings.csv')
     
     #fig_loadings = cluster.pcaplot(x=loadings[0], y=loadings[1],  labels=df.columns.values, 
@@ -79,18 +78,33 @@ def doLDA(df, path, name):
     pathData = os.path.join(path, name+'_LDA.csv')
 
 
+    x = df.drop(['date', 'name'], axis=1).values
+    
     y =  df['name']
-    print(y)
-    x = df.drop(['date', 'name', 'label'], axis=1).values
-    print(f'components_LDA {components_LDA}, y_unique: {y.unique}')
     lda = LinearDiscriminantAnalysis(n_components=components_LDA)
-    # linearComponents = lda.fit_transform(x, y)
     linearComponents = lda.fit_transform(x,y)
-    dfLDA = pd.DataFrame(data = linearComponents, columns=['LD1', 'LD2', 'LD3'])
+
+    print(f'components_LDA {components_LDA}, y_unique: {y.unique}')
+    dfLDA = pd.DataFrame(data=linearComponents, columns=[
+                         f'LD{i+1}' for i in range(components_LDA)])
+
     dfLDA['label'] = y
     dfLDA['name']= df['name']
     dfLDA['date'] = df['date']
-    print(lda.explained_variance_ratio_)
+    print(dfLDA)
+    
+    scalings = lda.scalings_.T
+    num_ld = lda.n_features_in_
+    ld_list = ["LD"+str(i) for i in list(range(1, num_ld+1))]
+    scalings_df = pd.DataFrame.from_dict(dict(zip(ld_list, scalings)))
+    RT = np.arange(start=0,stop=7032)
+    scalings_df['Retention Time'] = RT
+    scalings_df['Retention Time'] = scalings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
+    scalings_df.set_index('Retention Time', inplace=True)
+    scalings_df.to_csv('scalings.csv')
+    
+
+
     if components_LDA == 3:
         fig = px.scatter_3d(dfLDA, x='LD1', y='LD2', z='LD3', color='label', custom_data=['name', 'date'])
         fig.update_traces(
@@ -105,8 +119,29 @@ def doLDA(df, path, name):
         dfLDA.to_csv(pathData, sep='\t', decimal='.')
         fig.write_html(pathPlot)
         fig.show()
-    
+
     return dfLDA
+    
+'''def myplot(score,coeff,labels=None):
+    xs = score[:,0]
+    ys = score[:,1]
+    n = coeff.shape[0]
+
+    plt.scatter(xs ,ys, ) #without scaling
+    for i in range(n):
+        plt.arrow(0, 0, coeff[i,0], coeff[i,1],color = 'r',alpha = 0.5)
+        if labels is None:
+            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, "Var"+str(i+1), color = 'g', ha = 'center', va = 'center')
+        else:
+            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
+
+plt.xlabel("LD{}".format(1))
+plt.ylabel("LD{}".format(2))
+plt.grid()
+
+#Call the function. '''
+
+    
 
 
 if __name__ == '__main__':
