@@ -39,19 +39,12 @@ def doPCA(df, path, name):
     num_pc = pca.n_features_
     pc_list = ["PC"+str(i) for i in list(range(1, num_pc+1))]
     loadings_df = pd.DataFrame.from_dict(dict(zip(pc_list, loadings)))
-    RT = np.arange(start=0,stop=7032)
+    RT = np.arange(start=0,stop=6732)
     loadings_df['Retention Time'] = RT
-    loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
+    loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/6732)+2.5)
     loadings_df.set_index('Retention Time', inplace=True)
     loadings_df.to_csv('loadings.csv')
     
-    #fig_loadings = cluster.pcaplot(x=loadings[0], y=loadings[1],  labels=df.columns.values, 
-    #var1=round(pca.explained_variance_ratio_[0]*100, 2), var2=round(pca.explained_variance_ratio_[1]*100, 2)) 
-
-    #fig_loadings.show()
-
-    #ax = sns.heatmap(loadings_df, annot=True, cmap='Spectral')
-    #plt.show()
     
 
     if components_PCA == 3:
@@ -97,9 +90,9 @@ def doLDA(df, path, name):
     num_ld = lda.n_features_in_
     ld_list = ["LD"+str(i) for i in list(range(1, num_ld+1))]
     scalings_df = pd.DataFrame.from_dict(dict(zip(ld_list, scalings)))
-    RT = np.arange(start=0,stop=7032)
+    RT = np.arange(start=0,stop=6732)
     scalings_df['Retention Time'] = RT
-    scalings_df['Retention Time'] = scalings_df['Retention Time'].apply(lambda x: x*(11.73/7032)+2)
+    scalings_df['Retention Time'] = scalings_df['Retention Time'].apply(lambda x: x*(11.73/6732)+2.5)
     scalings_df.set_index('Retention Time', inplace=True)
     scalings_df.to_csv('scalings.csv')
     

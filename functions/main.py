@@ -85,9 +85,11 @@ class DataProcessing:
 
             dict_path = DataProcessing.sort_files(path)
             thisDf = pd.read_csv(dict_path['chromatogramm'], delimiter='\t', decimal='.', header=10, encoding='latin1')
+            thisDf.drop(thisDf.index[range(300)], inplace=True)
             thisDf.set_index('Ret.Time', inplace=True)
             thisDf.drop('Relative Intensity', axis=1, inplace=True)
             dfResult = pd.concat([dfResult, thisDf], axis=1)
+            
 
         # formating df result
         dfResult = dfResult.T.fillna(0).reset_index(drop=True)

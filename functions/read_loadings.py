@@ -11,22 +11,20 @@ print(df_abs)
 print(df_sum)
 
 
-#fig_df = cluster.pcaplot(x=df[0], y=df[1],  labels=df.columns.values, 
-#var1=round(pca.explained_variance_ratio_[0]*100, 2), var2=round(pca.explained_variance_ratio_[1]*100, 2)) 
-
-#fig_df.show()
-
-fig = plt.figure(tight_layout=True)
-gs = gridspec.GridSpec(4, 1)
+fig = plt.figure(tight_layout=True, figsize=(12,8))
+gs = gridspec.GridSpec(3, 1)
 
 i = 0
-for col in df_abs.columns:
+for col in df.columns:
     ax = fig.add_subplot(gs[i, 0])
-    ax.plot(df_abs[col])
-    ax.set_ylabel('ret. time')
-    ax.set_xlabel(col)
+    ax.axhline(y = 0, color = 'r', linestyle = '-')
+    ax.plot(df[col])
+    ax.set_ylabel('Intensity Scalings', fontsize= 7)
+    ax.set_xlabel('ret. time [min]')
+    ax.grid(True)
+    ax.set_title(col)
     i +=1
-    df_sort = df_abs[col].sort_values(ascending=False).abs()
+    df_sort = df[col].sort_values(ascending=True)
     print(f'max from {col}')
     print(df_sort.head(10))
 
