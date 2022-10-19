@@ -10,7 +10,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 
 path_new = 'C:\\Users\\sverme-adm\\Desktop\\data_neu'
-path_old = 'C:\\Users\\sverme-adm\\Desktop\\data'
+path_smooth = 'C:\\Users\\sverme-adm\\Desktop\\data_neu_smooth'
 
 class DataProcessing:
     def list_files_entire_path(path):

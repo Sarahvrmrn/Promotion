@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import matplotlib.gridspec as gridspec
 
 
-df = pd.read_csv('scalings.csv', decimal='.', delimiter=',', index_col=0)
+df = pd.read_csv('loadings.csv', decimal='.', delimiter=',', index_col=0)
 df_abs= df.abs()
 df_sum = df_abs[df.columns[0]] + df_abs[df.columns[1]] + df_abs[df.columns[2]]
 df_abs['sum'] = df_sum
@@ -19,7 +19,7 @@ for col in df.columns:
     ax = fig.add_subplot(gs[i, 0])
     ax.axhline(y = 0, color = 'r', linestyle = '-')
     ax.plot(df[col])
-    ax.set_ylabel('Intensity Scalings', fontsize= 7)
+    ax.set_ylabel('Intensity loadings', fontsize= 7)
     ax.set_xlabel('ret. time [min]')
     ax.grid(True)
     ax.set_title(col)
