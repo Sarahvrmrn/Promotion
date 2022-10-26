@@ -14,6 +14,9 @@ import test
 from bioinfokit.visuz import cluster
 
 
+
+
+
 components_PCA = 3
 components_LDA = 3
 
@@ -41,7 +44,7 @@ def doPCA(df, path, name):
     loadings_df = pd.DataFrame.from_dict(dict(zip(pc_list, loadings)))
     RT = np.arange(start=0,stop=6732)
     loadings_df['Retention Time'] = RT
-    loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.73/6732)+2.5)
+    loadings_df['Retention Time'] = loadings_df['Retention Time'].apply(lambda x: x*(11.23/6732)+2.5)
     loadings_df.set_index('Retention Time', inplace=True)
     loadings_df.to_csv('loadings.csv')
     
@@ -92,7 +95,7 @@ def doLDA(df, path, name):
     scalings_df = pd.DataFrame.from_dict(dict(zip(ld_list, scalings)))
     RT = np.arange(start=0,stop=6732)
     scalings_df['Retention Time'] = RT
-    scalings_df['Retention Time'] = scalings_df['Retention Time'].apply(lambda x: x*(11.73/6732)+2.5)
+    scalings_df['Retention Time'] = scalings_df['Retention Time'].apply(lambda x: x*(11.23/6732)+2.5)
     scalings_df.set_index('Retention Time', inplace=True)
     scalings_df.to_csv('scalings.csv')
     
@@ -114,6 +117,9 @@ def doLDA(df, path, name):
         fig.show()
 
     return dfLDA
+
+
+
     
 '''def myplot(score,coeff,labels=None):
     xs = score[:,0]
