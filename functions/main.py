@@ -17,6 +17,8 @@ from sklearn.tree import DecisionTreeClassifier
 path_new = 'C:\\Users\\sverme-adm\\Desktop\\data_neu'
 path_smooth = 'C:\\Users\\sverme-adm\\Desktop\\data_neu_smooth'
 path_air = 'C:\\Users\\sverme-adm\\Desktop\\data_ohneErde'
+path_inf_healthy = 'C:\\Users\\sverme-adm\\Desktop\\data_infiziert_gesund'
+path_90 = 'C:\\Users\\sverme-adm\\Desktop\\data_90'
 class DataProcessing:
     def list_files_entire_path(path):
         return [os.path.join(path, i) for i in os.listdir(path)]
@@ -114,7 +116,7 @@ class DataProcessing:
         pathSaveResult = os.path.join(pathSave, dt_string +'_results.csv')
         print(pathSaveResult)
         dfResult.to_csv(pathSaveResult, decimal='.', sep='\t', index=False)
-        exit()
+        
         """X,y = dfResult(return_X_y=True)
         print(X.shape, y.shape)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=0)
@@ -141,4 +143,4 @@ class DataProcessing:
 
 
 
-DataProcessing.readData(path_new)
+DataProcessing.readData(path_90)

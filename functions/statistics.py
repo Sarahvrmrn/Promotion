@@ -18,7 +18,7 @@ from bioinfokit.visuz import cluster
 
 
 components_PCA = 3
-components_LDA = 3
+
 
 def doPCA(df, path, name):
     pathPlot = os.path.join(path, name+'_PCA.html')
@@ -68,6 +68,7 @@ def doPCA(df, path, name):
         
     return dfPCA
 
+components_LDA = 3
 
 def doLDA(df, path, name):
     pathPlot = os.path.join(path, name+'_LDA.html')

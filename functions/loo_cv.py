@@ -4,7 +4,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from matplotlib import pyplot as plt
-path = 'C:\\Users\\sverme-adm\\Desktop\\data_neu\\results\\25-10-2022_14-30-08_results.csv'
+path = 'C:\\Users\\sverme-adm\\Desktop\\data_90\\results\\22-11-2022_14-17-22_results.csv'
 
 
 # prepare data
@@ -16,7 +16,8 @@ y_str = df['name']
 df.drop('name', axis=1, inplace=True)
 x = df.values.tolist()
 
-y_str_u = y_str.unique().tolist() #  identify names of uniqew samples
+y_str_u = y_str.unique().tolist()
+print(y_str_u) #  identify names of uniqew samples
 sample_dict = {} # create dict to classify numbers to specimen
 for i in range(len(y_str_u)):
     sample_dict[y_str_u[i]] = i
@@ -50,6 +51,22 @@ print(y_test)
 print(y_pred)
 
 cm = confusion_matrix(y_test, y_pred)
+cm_sum =np.sum(cm, axis=1, keepdims=True)
 print(cm)
-sns.heatmap(cm, annot=True)
+top_margin = 0.06  # in percentage of the figure height
+bottom_margin = 0.06 # in percentage of the figure height
+
+
+# build the figure instance with the desired height
+fig, ax = plt.subplots(
+        figsize=(10,8), 
+        gridspec_kw=dict(top=1-top_margin, bottom=bottom_margin))
+sns.heatmap(cm / cm_sum.astype(float), annot=True, fmt='.2%', ax=ax);  #annot=True to annotate cells, ftm='g' to disable scientific notation
+
+# labels, title and ticks
+ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
+ax.set_title('Confusion Matrix'); 
+ax.xaxis.set_ticklabels(y_str_u, fontsize=5.5)
+ax.yaxis.set_ticklabels(y_str_u, fontsize=5.5)
+
 plt.show()
