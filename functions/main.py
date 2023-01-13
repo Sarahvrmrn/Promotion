@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 from matplotlib import pyplot as plt
-from statistics import doPCA, doLDA
+from statistics_1 import doPCA, doLDA
 from threading import Thread
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import train_test_split
@@ -19,6 +19,7 @@ path_smooth = 'C:\\Users\\sverme-adm\\Desktop\\data_neu_smooth'
 path_air = 'C:\\Users\\sverme-adm\\Desktop\\data_ohneErde'
 path_inf_healthy = 'C:\\Users\\sverme-adm\\Desktop\\data_infiziert_gesund'
 path_90 = 'C:\\Users\\sverme-adm\\Desktop\\data_90'
+path_split2 = 'C:\\Users\\sverme-adm\\Desktop\\data_split2'
 class DataProcessing:
     def list_files_entire_path(path):
         return [os.path.join(path, i) for i in os.listdir(path)]
@@ -143,4 +144,4 @@ class DataProcessing:
 
 
 
-DataProcessing.readData(path_90)
+DataProcessing.readData(path_split2)
