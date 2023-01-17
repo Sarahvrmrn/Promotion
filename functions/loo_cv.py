@@ -4,7 +4,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from matplotlib import pyplot as plt
-path = 'C:\\Users\\sverme-adm\\Desktop\\data_split2\\results\\13-01-2023_10-49-05_resultss.csv'
+path = 'C:\\Users\\sverme-adm\\Desktop\\data_split2\\results\\17-01-2023_13-44-13_results.csv'
 
 
 # prepare data
